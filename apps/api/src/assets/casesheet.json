@@ -1,0 +1,17 @@
+{
+  "name": "",
+  "victim": 0,
+  "scene": "",
+  "clueSelections": {
+    "sex": "",
+    "hiding": {
+      "side": "",
+      "town": ""
+    },
+    "weapons": {
+      "used": ""
+    },
+    "locations": {}
+  },
+  "suspectStatements": {}
+}
