@@ -13,7 +13,7 @@ export interface Location {
   "id": string;
   "name": string;
   "address": Address;
-  "occupants": Array<Character>;
+  "occupants": Array<string>;
   "weapon": Weapon;
 }
 
