@@ -15,4 +15,12 @@ describe('GameCreatorService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should have a 32 character id', () => {
+    expect(service.createGame('test').id.length).toBe(32);
+  });
+
+  it('should return the name provided', () => {
+    expect(service.createGame('test').name).toBe('test');
+  });
 });

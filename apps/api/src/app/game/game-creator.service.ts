@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { createHash } from 'crypto';
 import { Game } from '@electronic-detective/api-interfaces';
 import { Helpers } from '@electronic-detective/utilities';
-import { Address, Character, Location, Weapon } from '@electronic-detective/utilities';
+import {
+  Address,
+  Character,
+  Location,
+  Weapon,
+} from '@electronic-detective/utilities';
 import * as addresses from '../../assets/addresses.json';
 import * as characters from '../../assets/characters.json';
 import * as locations from '../../assets/locations.json';
 import * as weapons from '../../assets/weapons.json';
+import { Hash } from 'node:crypto';
 
 @Injectable()
 export class GameCreatorService {
@@ -14,20 +21,22 @@ export class GameCreatorService {
     // Pick a victim from the cast of characters, then remove them
     // from the list of characters
     const victimIndex: number = Helpers.getRandomInt(charactersArr.length);
-    const victim: Character = charactersArr[victimIndex].id;
+    const victim: string = charactersArr[victimIndex].id;
     charactersArr.splice(victimIndex, 1);
     // Pick a murderer, but leave them in the cast
     const murdererIndex = Helpers.getRandomInt(charactersArr.length);
     const murderer: string = charactersArr[murdererIndex].id;
 
     // Define the address of each location
-    const locationsArr: Array<Location> = Helpers.objKeysToArray(Helpers.deepCopy(locations));
+    const locationsArr: Array<Location> = Helpers.objKeysToArray(
+      Helpers.deepCopy(locations)
+    );
     const addressesArr: Array<Address> = Helpers.objKeysToArray(addresses);
-    locationsArr.forEach(location => {
+    locationsArr.forEach((location) => {
       const address = Helpers.getRandomInt(addressesArr.length);
       location.address = addressesArr[address];
       addressesArr.splice(address, 1);
-    })
+    });
 
     // One of the locations is the scene of the crime, so remove it from play
     const sceneIndex: number = Helpers.getRandomInt(locationsArr.length);
@@ -37,7 +46,8 @@ export class GameCreatorService {
 
     // Pick the weapon used to commit the crime
     const weaponsArr = Helpers.objKeysToArray(weapons);
-    const weapon: string = weaponsArr[Helpers.getRandomInt(weaponsArr.length)].id;
+    const weapon: string =
+      weaponsArr[Helpers.getRandomInt(weaponsArr.length)].id;
 
     // Everywhere that isn't the scene of the crime has one odd-numbered male,
     // one odd-numbered femaile, one even-numbered male, and one even-numbered
@@ -47,8 +57,8 @@ export class GameCreatorService {
     const oddMenArr: Array<Character> = [];
     const evenWomenArr: Array<Character> = [];
     const oddWomenArr: Array<Character> = [];
-    charactersArr.forEach(character => {
-      if (character.gender == "M") {
+    charactersArr.forEach((character) => {
+      if (character.gender == 'M') {
         if (character.odd == true) {
           oddMenArr.push(character);
         } else {
@@ -71,14 +81,14 @@ export class GameCreatorService {
     for (let i = 0; i < numLocs; i++) {
       const index = Helpers.getRandomInt(locationsArr.length);
       // Have to replicate the location so we don't mutate the source data
-      randLocationsArr.push({...locationsArr[index]});
+      randLocationsArr.push({ ...locationsArr[index] });
       locationsArr.splice(index, 1);
     }
     // Each location gets occupied with the characters
     let murdererLoc: string;
-    randLocationsArr.forEach(location => {
+    randLocationsArr.forEach((location) => {
       const occupants: Array<string> = [];
-      sortChars.forEach(sortArr => {
+      sortChars.forEach((sortArr) => {
         if (sortArr.length) {
           const index = Helpers.getRandomInt(sortArr.length);
           occupants.push(sortArr[index].id);
@@ -91,17 +101,19 @@ export class GameCreatorService {
 
     // Pick the locations to stash the weapons. These cannot be the same
     // as the scene of the crime or where the murderer is hiding.
-    const randWeaponLocs: Array<Location> = randLocationsArr.slice(0).filter(randWeaponLoc => randWeaponLoc.id !== murdererLoc);
+    const randWeaponLocs: Array<Location> = randLocationsArr
+      .slice(0)
+      .filter((randWeaponLoc) => randWeaponLoc.id !== murdererLoc);
 
     const murdererOdd = characters[murderer].odd;
-    weaponsArr.forEach(tossWeapon => {
+    weaponsArr.forEach((tossWeapon) => {
       // For the murder weapon, prints have to match murderer, otherwise
       // the prints should be the opposite (even / odd)
       const newWeapon: Weapon = Helpers.deepCopy(tossWeapon) as Weapon;
       if (newWeapon.id === weapon) {
-        newWeapon.fingerprint = murdererOdd ? "odd" : "even";
+        newWeapon.fingerprint = murdererOdd ? 'odd' : 'even';
       } else {
-        newWeapon.fingerprint = murdererOdd ? "even" : "odd";
+        newWeapon.fingerprint = murdererOdd ? 'even' : 'odd';
       }
       const randIndex = Helpers.getRandomInt(randWeaponLocs.length);
       randWeaponLocs[randIndex].weapon = newWeapon;
@@ -110,6 +122,31 @@ export class GameCreatorService {
     // Put the scene of the crime back into the list of locations
     randLocationsArr.push(sceneObj);
 
-    return {name: name, id: ""};
+    // Turn locations from an array back into an object
+    const newLocationsObj = {};
+    randLocationsArr.forEach((location) => {
+      const id = location.id;
+      delete location.id;
+      newLocationsObj[id] = location;
+    });
+
+    const finalData = {
+      locations: newLocationsObj,
+      scene: sceneId,
+      victim,
+      murderer,
+      weapon,
+    };
+    console.log('Created game: ', finalData);
+    console.log('Name: ' + name);
+
+    // Generate an id for the game
+    const now: string =
+      name + '-' + Date.now().toString() + '-' + Math.random() * 100;
+    const shasum: Hash = createHash('md5');
+    shasum.update(now);
+    const id: string = shasum.digest('hex');
+
+    return { name, id };
   }
 }
