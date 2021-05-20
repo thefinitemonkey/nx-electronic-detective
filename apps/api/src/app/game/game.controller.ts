@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Post } from '@nestjs/common';
+import { Controller, Query, Post } from '@nestjs/common';
 
 import { GameCreatorService }  from './game-creator.service';
 
