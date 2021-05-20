@@ -16,8 +16,10 @@ import { Hash } from 'node:crypto';
 
 @Injectable()
 export class GameCreatorService {
+  private gameData;
+
   createGame(name: string): Game {
-    const gameData = GameCreatorService.buildGame();
+    this.gameData = GameCreatorService.buildGame();
 
     // Generate an id for the game
     const now: string =
@@ -29,7 +31,11 @@ export class GameCreatorService {
     return { name, id };
   }
 
-  static buildGame() {
+  getGame(): Record<string, unknown> {
+    return this.gameData;
+  }
+
+  private static buildGame() {
     const charactersArr: Array<Character> = Helpers.objKeysToArray(characters);
     // Pick a victim from the cast of characters, then remove them
     // from the list of characters
@@ -152,7 +158,7 @@ export class GameCreatorService {
       murderer,
       weapon,
     };
-    console.log('Created game: ', finalData);
+    //console.log('Created game: ', finalData);
 
     return finalData;
   }

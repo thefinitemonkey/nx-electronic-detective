@@ -24,7 +24,9 @@ describe('GameCreatorService', () => {
     expect(service.createGame('test').name).toBe('test');
   });
 
-  const game = GameCreatorService.buildGame();
+  const instance = new GameCreatorService();
+  instance.createGame('test');
+  const game = instance.getGame();
   it('should generate a properly formatted game object', () => {
     expect(Object.keys(game.locations).length).toEqual(6);
     const expected = expect.stringMatching(/^([A-Z])$/);
