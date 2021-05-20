@@ -17,6 +17,19 @@ import { Hash } from 'node:crypto';
 @Injectable()
 export class GameCreatorService {
   createGame(name: string): Game {
+    const gameData = GameCreatorService.buildGame();
+
+    // Generate an id for the game
+    const now: string =
+      name + '-' + Date.now().toString() + '-' + Math.random() * 100;
+    const shasum: Hash = createHash('md5');
+    shasum.update(now);
+    const id: string = shasum.digest('hex');
+
+    return { name, id };
+  }
+
+  static buildGame() {
     const charactersArr: Array<Character> = Helpers.objKeysToArray(characters);
     // Pick a victim from the cast of characters, then remove them
     // from the list of characters
@@ -27,7 +40,8 @@ export class GameCreatorService {
     const murdererIndex = Helpers.getRandomInt(charactersArr.length);
     const murderer: string = charactersArr[murdererIndex].id;
 
-    // Define the address of each location
+    // Define the address of each location and put an empty weapon
+    // object at each
     const locationsArr: Array<Location> = Helpers.objKeysToArray(
       Helpers.deepCopy(locations)
     );
@@ -36,6 +50,7 @@ export class GameCreatorService {
       const address = Helpers.getRandomInt(addressesArr.length);
       location.address = addressesArr[address];
       addressesArr.splice(address, 1);
+      location.weapon = {id:'', fingerprint:''} as Weapon;
     });
 
     // One of the locations is the scene of the crime, so remove it from play
@@ -138,15 +153,7 @@ export class GameCreatorService {
       weapon,
     };
     console.log('Created game: ', finalData);
-    console.log('Name: ' + name);
 
-    // Generate an id for the game
-    const now: string =
-      name + '-' + Date.now().toString() + '-' + Math.random() * 100;
-    const shasum: Hash = createHash('md5');
-    shasum.update(now);
-    const id: string = shasum.digest('hex');
-
-    return { name, id };
+    return finalData;
   }
 }
