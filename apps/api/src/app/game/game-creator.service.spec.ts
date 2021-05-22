@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameCreatorService } from './game-creator.service';
+import * as characters from '../../assets/characters.json';
+import { Weapon, Character } from '@electronic-detective/utilities';
 
 describe('GameCreatorService', () => {
   let service: GameCreatorService;
@@ -75,12 +77,74 @@ describe('GameCreatorService', () => {
     expect(numThree).toBe(1);
   });
 
-  // TO-DO: Only one location should have the .38, and it shouldn't be
-  // the scene of the crime or where the murderer is
+  let weapon38: Weapon;
+  let weapon45: Weapon;
+  it('should have the .38 in a location away from the crime scene and murderer', () => {
+    const keys = Object.keys(game.locations);
+    let locCount = 0;
+    let goodPlacement = true;
+    keys.forEach((key) => {
+      const weapon = game.locations[key]['weapon'];
+      if (weapon['type'] == '.38') {
+        locCount++;
+        if (locCount > 1) goodPlacement = false;
+        weapon38 = weapon;
+        if (key == game.scene) goodPlacement = false;
+        if (
+          game.locations[key]['occupants'].filter(
+            (occupant: Character) => occupant['id'] == game.murderer
+          ).length > 0
+        )
+          goodPlacement = false;
+      }
+    });
 
-  // TO-DO: Only one location should have the .45, and it shouldn't be
-  // the scene of the crime or where the murderer is
+    expect(goodPlacement).toBe(true);
+  });
 
-  /// TO-DO: The murder weapon should match the prints of the murderer
-  // and the other weapon should not match the murderer
+  it('should have the .45 in a location away from the crime scene and murderer', () => {
+    const keys = Object.keys(game.locations);
+    let locCount = 0;
+    let goodPlacement = true;
+    keys.forEach((key) => {
+      const weapon = game.locations[key]['weapon'];
+      if (weapon['type'] == '.45') {
+        locCount++;
+        if (locCount > 1) goodPlacement = false;
+        weapon45 = weapon;
+        if (key == game.scene) goodPlacement = false;
+        if (
+          game.locations[key]['occupants'].filter(
+            (occupant: Character) => occupant['id'] == game.murderer
+          ).length > 0
+        )
+          goodPlacement = false;
+      }
+    });
+
+    expect(goodPlacement).toBe(true);
+  });
+
+  it('should have matching prints on the murder weapon and opposite on the other weapon', () => {
+    const murdererPrints = characters[game.murderer as string]['odd']
+      ? 'odd'
+      : 'even';
+
+    const otherPrints = characters[game.murderer as string]['odd']
+      ? 'even'
+      : 'odd';
+
+    const expectedWeaponPrints =
+      game.weapon == '.38'
+        ? { '.38': murdererPrints, '.45': otherPrints }
+        : { '.38': otherPrints, '.45': murdererPrints };
+
+    const properPrints =
+      weapon38.fingerprint == expectedWeaponPrints['.38'] &&
+      weapon45.fingerprint == expectedWeaponPrints['.45']
+        ? true
+        : false;
+
+    expect(properPrints).toBe(true);
+  });
 });
