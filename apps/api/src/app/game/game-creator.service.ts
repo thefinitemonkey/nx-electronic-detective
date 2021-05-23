@@ -168,7 +168,7 @@ export class GameCreatorService {
       murderer,
       weapon,
     };
-    //console.log('Created game: ', finalData);
+    console.log('Created game: ', finalData);
 
     return finalData;
   }
