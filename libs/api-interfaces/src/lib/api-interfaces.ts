@@ -2,7 +2,8 @@ export interface Message {
   message: string;
 }
 
-export interface Game {
+export interface GameAction {
   name: string;
   id: string;
+  code: string;
 }

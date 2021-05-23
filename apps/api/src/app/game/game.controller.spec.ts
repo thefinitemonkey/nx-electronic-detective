@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GameCreatorService } from './game-creator.service';
 import { GameController } from './game.controller';
+import { GameAction } from '@electronic-detective/api-interfaces';
 
 describe('GameController', () => {
   let controller: GameController;
@@ -18,9 +19,18 @@ describe('GameController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should should generate a properly formatted response', () => {
-    const expected = expect.stringMatching(/^([a-zA-Z0-9]){32,32}$/);
-    expect(controller.getData('test').id).toEqual(expected);
-    expect(controller.getData('test').name).toBe('test');
-  })
+  new Promise(() => {
+    const instance = new GameController(new GameCreatorService());
+    instance.getData('test');
+  }).then((response) => {
+    const result: GameAction = response as GameAction;
+
+    it('should should generate a properly formatted response', () => {
+      const expected = expect.stringMatching(/^([a-zA-Z0-9]){32,32}$/);
+      expect(result.id).toEqual(expected);
+      expect(result.name).toBe('test');
+      expect(result.code).toBe('200');
+      console.log('Complete GameController check of return');
+    });
+  });
 });

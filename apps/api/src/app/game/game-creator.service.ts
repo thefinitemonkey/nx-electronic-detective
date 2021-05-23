@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createHash } from 'crypto';
-import { Game } from '@electronic-detective/api-interfaces';
+import { GameAction } from '@electronic-detective/api-interfaces';
 import { Helpers } from '@electronic-detective/utilities';
 import {
   Address,
@@ -13,29 +13,39 @@ import * as characters from '../../assets/characters.json';
 import * as locations from '../../assets/locations.json';
 import * as weapons from '../../assets/weapons.json';
 import { Hash } from 'node:crypto';
+import { CosmosClient } from '@azure/cosmos';
+import { environment } from '../../environments/environment';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Injectable()
 export class GameCreatorService {
   private gameData;
+  private name:string;
+  private id:string;
 
-  createGame(name: string): Game {
-    this.gameData = GameCreatorService.buildGame();
+  async createGame(name: string): Promise<GameAction> {
+    // Generate the game data
+    this.gameData = this.buildGame();
+    this.name = name;
 
     // Generate an id for the game
     const now: string =
-      name + '-' + Date.now().toString() + '-' + Math.random() * 100;
+      this.name + '-' + Date.now().toString() + '-' + Math.random() * 100;
     const shasum: Hash = createHash('md5');
     shasum.update(now);
-    const id: string = shasum.digest('hex');
+    this.id = shasum.digest('hex');
 
-    return { name, id };
+    // Save the game to the database
+    const code = await this.saveGame();
+
+    return { name:this.name, id: this.id, code };
   }
 
   getGame(): Record<string, unknown> {
     return this.gameData;
   }
 
-  private static buildGame() {
+  private buildGame() {
     const charactersArr: Array<Character> = Helpers.objKeysToArray(characters);
     // Pick a victim from the cast of characters, then remove them
     // from the list of characters
@@ -161,5 +171,23 @@ export class GameCreatorService {
     //console.log('Created game: ', finalData);
 
     return finalData;
+  }
+
+  private async saveGame(): Promise<string> {
+    console.log('Saving game');
+    // Save the game off to the database and return a
+    // success or error code
+    const key = environment.mongoUser + ':' + environment.mongoPass;
+    const endpoint = environment.mongoEndpoint + '?' + environment.mongoOptions;
+    const client: CosmosClient = new CosmosClient({endpoint, key});
+    console.log('Client created: ' + client.databases);
+    const { database } = await client.databases.createIfNotExists({ id: 'ElectronicDetective' });
+    console.log('Completed database connect: ' + database.url);
+    const { container } = await database.containers.createIfNotExists({ id: 'Games' });
+    console.log('Complete container connection: ' + container.url);
+    const result = await container.items.create({ id: this.id, name: this.name, setup: this.gameData});
+
+    console.log('Game save response code: ' + result);
+    return result.statusCode.toString();
   }
 }
