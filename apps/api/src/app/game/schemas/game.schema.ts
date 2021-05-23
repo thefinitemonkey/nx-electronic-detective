@@ -29,3 +29,4 @@ export class Game {
   @Prop()
   weapon: string;
 }
+export const GameSchema = SchemaFactory.createForClass(Game);
