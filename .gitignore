@@ -39,4 +39,4 @@ testem.log
 Thumbs.db
 
 # Secrets Files
-/environments/secrets.ts
+**/secrets.ts

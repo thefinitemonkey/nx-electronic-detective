@@ -10,4 +10,5 @@ export const secrets = {
   mongoSecondary:
     'mongodb://finitemonkey:O6VVdEQM5sO13tQS3pC3TPa5am4YrpX4zUejww1pigoRZWxJLHiIKG8TC7zziiEpH0FOiTqF31HSIObQsZZntA==@finitemonkey.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@finitemonkey@',
   cosmosEndpoint: 'https://finitemonkey.documents.azure.com:443/',
+  test: 'test',
 };
