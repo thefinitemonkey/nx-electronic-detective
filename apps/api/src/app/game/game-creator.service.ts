@@ -1,7 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { Game, GameDocument } from './schemas/game.schema';
 import { createHash } from 'crypto';
 import { GameAction } from '@electronic-detective/api-interfaces';
 import { Helpers } from '@electronic-detective/utilities';
@@ -16,13 +13,11 @@ import * as characters from '../../assets/characters.json';
 import * as locations from '../../assets/locations.json';
 import * as weapons from '../../assets/weapons.json';
 import { Hash } from 'node:crypto';
-import { CosmosClient } from '@azure/cosmos';
-import { environment } from '../../environments/environment';
 
 
 @Injectable()
 export class GameCreatorService {
-  constructor(@InjectModel(Game.name) private gameModel: Model<GameDocument>) {};
+  // constructor(@InjectModel(Game.name) private gameModel: Model<GameDocument>) {};
 
   private gameData;
   private name:string;
@@ -39,10 +34,6 @@ export class GameCreatorService {
     const shasum: Hash = createHash('md5');
     shasum.update(now);
     this.id = shasum.digest('hex');
-
-    // Save the game to the database
-    const savedGame = await this.saveGame();
-    console.log('Save game complete: ' + savedGame.murderer);
 
     return { name:this.name, id: this.id, code: '200' };
   }
@@ -179,25 +170,5 @@ export class GameCreatorService {
     return finalData;
   }
 
-  private async saveGame(): Promise<Game> {
-    console.log('Saving game');
-    // Save the game off to the database and return a
-    // success or error code
-    /*
-    const key = environment.mongoUser + ':' + environment.mongoPass;
-    const endpoint = environment.mongoEndpoint + '?' + environment.mongoOptions;
-    const client: CosmosClient = new CosmosClient({endpoint, key});
-    console.log('Client created: ' + client.databases);
-    const { database } = await client.databases.createIfNotExists({ id: 'ElectronicDetective' });
-    console.log('Completed database connect: ' + database.url);
-    const { container } = await database.containers.createIfNotExists({ id: 'Games' });
-    console.log('Complete container connection: ' + container.url);
-    const result = await container.items.create({ id: this.id, name: this.name, setup: this.gameData});
-    */
-   const createdGame = new this.gameModel(this.gameData);
-   return createdGame.save();
 
-   // console.log('Game save response code: ' + result);
-   // return result.statusCode.toString();
-  }
 }

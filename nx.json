@@ -19,6 +19,7 @@
     },
     "api": { "tags": [] },
     "api-interfaces": { "tags": [] },
-    "shared-utilities": { "tags": ["libs shared"] }
+    "shared-utilities": { "tags": ["libs shared"] },
+    "schemas": { "tags": [] }
   }
 }
