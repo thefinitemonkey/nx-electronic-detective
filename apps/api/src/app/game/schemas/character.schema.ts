@@ -17,13 +17,13 @@ export class Character extends Document {
   "occupation": string;
 
   @Prop()
-  "relationshipID": bigint;
+  "relationshipID": string;
 
   @Prop()
   "relationshipStatus": string;
 
   @Prop()
-  "availableQuestions": [bigint];
+  "availableQuestions": [string];
 
   @Prop(raw({
     portrait: { type: String },
