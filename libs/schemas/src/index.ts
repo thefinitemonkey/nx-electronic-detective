@@ -1,1 +1,1 @@
-export * from './lib/game.schema';
+export * from './lib/games.module';

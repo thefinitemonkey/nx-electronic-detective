@@ -1,0 +1,8 @@
+[
+  { "id": "1", "side": "East", "town": "Uptown" },
+  { "id": "2", "side": "East", "town": "Midtown" },
+  { "id": "3", "side": "East", "town": "Downtown" },
+  { "id": "4", "side": "West", "town": "Uptown" },
+  { "id": "5", "side": "West", "town": "Midtown" },
+  { "id": "6", "side": "West", "town": "Downtown" }
+]

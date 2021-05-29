@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { GameController } from './game/game.controller';
-import { AppService } from './app.service';
-import { GameCreatorService } from './game/game-creator.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { GamesModule } from '@electronic-detective/schemas';
 
+import { secrets } from '../environments/secrets';
 
 @Module({
-  imports: [],
-  controllers: [AppController, GameController],
-  providers: [AppService, GameCreatorService],
+  imports: [GamesModule, MongooseModule.forRoot(secrets.mongoPrimary)],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

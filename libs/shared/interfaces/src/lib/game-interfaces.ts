@@ -1,4 +1,5 @@
 export interface Address {
+  "id": string;
   "side": string;
   "town": string;
 }
@@ -13,7 +14,7 @@ export interface Location {
   "id": string;
   "name": string;
   "address": Address;
-  "occupants": Array<string>;
+  "occupants": string[];
   "weapon": Weapon;
 }
 
@@ -28,8 +29,16 @@ export interface Character {
   "name": string;
   "gender": string;
   "occupation": string;
-  "relationshipID": BigInteger;
+  "relationshipID": string;
   "relationshipStatus": string;
   "images": CharacterImages;
-  "availableQuestions": Array<BigInteger>;
+  "availableQuestions": number[];
+}
+
+export interface GameSetup {
+  "victim": string,
+  "murderer": string,
+  "weapon": string,
+  "scene": string,
+  "locations": Location[]
 }

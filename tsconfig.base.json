@@ -19,7 +19,10 @@
         "libs/api-interfaces/src/index.ts"
       ],
       "@electronic-detective/utilities": ["libs/shared/utilities/src/index.ts"],
-      "@electronic-detective/schemas": ["libs/schemas/src/index.ts"]
+      "@electronic-detective/schemas": ["libs/schemas/src/index.ts"],
+      "@electronic-detective/interfaces": [
+        "libs/shared/interfaces/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -12,14 +12,15 @@
     }
   },
   "projects": {
-    "electronic-detective": { "tags": [] },
+    "electronic-detective": { "tags": ["apps ui"] },
     "electronic-detective-e2e": {
       "tags": [],
       "implicitDependencies": ["electronic-detective"]
     },
-    "api": { "tags": [] },
-    "api-interfaces": { "tags": [] },
+    "api": { "tags": ["apps api"] },
+    "api-interfaces": { "tags": ["libs api"] },
     "shared-utilities": { "tags": ["libs shared"] },
-    "schemas": { "tags": [] }
+    "schemas": { "tags": ["lis api schemas models"] },
+    "shared-interfaces": { "tags": ["libs shared"] }
   }
 }

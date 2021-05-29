@@ -1,0 +1,49 @@
+[
+  {
+    "id": "A",
+    "name": "Art Show",
+    "address": { "id": "", "side": "", "town": "" },
+    "occupants": [],
+    "weapon": {"id": "", "type": "", "fingerprint": ""}
+  },
+
+  {
+    "id": "B",
+    "name": "Box at Theatre",
+    "address": { "id": "", "side": "", "town": "" },
+    "occupants": [],
+    "weapon": {"id": "", "type": "", "fingerprint": ""}
+  },
+
+  {
+    "id": "C",
+    "name": "Card Party",
+    "address": { "id": "", "side": "", "town": "" },
+    "occupants": [],
+    "weapon": {"id": "", "type": "", "fingerprint": ""}
+  },
+
+  {
+    "id": "D",
+    "name": "Docks",
+    "address": { "id": "", "side": "", "town": "" },
+    "occupants": [],
+    "weapon": {"id": "", "type": "", "fingerprint": ""}
+  },
+
+  {
+    "id": "E",
+    "name": "Embassy",
+    "address": { "id": "", "side": "", "town": "" },
+    "occupants": [],
+    "weapon": {"id": "", "type": "", "fingerprint": ""}
+  },
+
+  {
+    "id": "F",
+    "name": "Factory",
+    "address": { "id": "", "side": "", "town": "" },
+    "occupants": [],
+    "weapon": {"id": "", "type": "", "fingerprint": ""}
+  }
+]
