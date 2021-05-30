@@ -20,7 +20,8 @@
     "api": { "tags": ["apps api"] },
     "api-interfaces": { "tags": ["libs api"] },
     "shared-utilities": { "tags": ["libs shared"] },
-    "schemas": { "tags": ["lis api schemas models"] },
-    "shared-interfaces": { "tags": ["libs shared"] }
+    "schemas-games": { "tags": ["lis api schemas models"] },
+    "shared-interfaces": { "tags": ["libs shared"] },
+    "schemas-questions": { "tags": ["libs api schemas models"] }
   }
 }

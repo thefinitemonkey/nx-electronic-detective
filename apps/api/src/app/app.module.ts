@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { GamesModule } from '@electronic-detective/schemas';
+import { GamesModule } from '@electronic-detective/schemas-games';
 
 import { secrets } from '../environments/secrets';
 

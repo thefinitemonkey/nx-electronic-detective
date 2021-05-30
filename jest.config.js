@@ -5,5 +5,6 @@ module.exports = {
     '<rootDir>/libs/shared/utilities',
     '<rootDir>/libs/schemas',
     '<rootDir>/libs/shared/interfaces',
+    '<rootDir>/libs/schemas/questions',
   ],
 };

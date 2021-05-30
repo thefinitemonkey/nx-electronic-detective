@@ -235,20 +235,20 @@
         }
       }
     },
-    "schemas": {
-      "root": "libs/schemas",
-      "sourceRoot": "libs/schemas/src",
+    "schemas-games": {
+      "root": "libs/schemas/games",
+      "sourceRoot": "libs/schemas/games/src",
       "projectType": "library",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/schemas/**/*.ts"]
+            "lintFilePatterns": ["libs/schemas/games/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/schemas"],
+          "outputs": ["coverage/libs/schemas/games"],
           "options": {
             "jestConfig": "libs/schemas/jest.config.js",
             "passWithNoTests": true
@@ -276,6 +276,27 @@
           "outputs": ["coverage/libs/shared/interfaces"],
           "options": {
             "jestConfig": "libs/shared/interfaces/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "schemas-questions": {
+      "root": "libs/schemas/questions",
+      "sourceRoot": "libs/schemas/questions/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/schemas/questions/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/schemas/questions"],
+          "options": {
+            "jestConfig": "libs/schemas/questions/jest.config.js",
             "passWithNoTests": true
           }
         }
