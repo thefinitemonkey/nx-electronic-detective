@@ -250,7 +250,7 @@
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/schemas/games"],
           "options": {
-            "jestConfig": "libs/schemas/jest.config.js",
+            "jestConfig": "libs/schemas/games/jest.config.js",
             "passWithNoTests": true
           }
         }
