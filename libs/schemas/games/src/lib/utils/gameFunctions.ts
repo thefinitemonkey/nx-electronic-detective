@@ -104,7 +104,7 @@ export class GameFunctions {
       .slice(0)
       .filter((randWeaponLoc) => randWeaponLoc.id !== murdererLoc);
 
-    const murdererOdd = characters[murderer].odd;
+    const murdererOdd = characters.find(character => character.id == murderer).odd;
     weaponsArr.forEach((tossWeapon) => {
       // For the murder weapon, prints have to match murderer, otherwise
       // the prints should be the opposite (even / odd)
